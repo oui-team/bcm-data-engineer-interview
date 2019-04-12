@@ -217,6 +217,10 @@ The following points are not required, but provide an extra bonus ;) If you do n
  * Once security and identification in place, we need to be able to rate limit this API. The limit is up to you.
  
 
+ We are also interested in knowing:
+  * How you would deploy this in production.
+  * What technologies would you use to have a CI/CD running. 
+
 ## Bonus // Search radius
 
 All airports can be found in an [online database (CSV)](http://www.partow.net/downloads/GlobalAirportDatabase.zip). Schema for this db is also available [online](http://www.partow.net/miscellaneous/airportdatabase/). 
@@ -230,7 +234,7 @@ For instance, to know which airports can be found near `LHR (London)`, one could
 
 You can implement this the way you want (create db, store in memory, pre compute results, compute everytime, ...)
 
-The response must be an array containing aiport codes (e.g ["LGW", "LTN", "LCY"])
+The response must be an array containing aiport codes (e.g `["LGW", "LTN", "LCY"]`)
 
 
 
@@ -244,33 +248,3 @@ The key points we will be looking at are:
  * Tech choices
 
 We know you may not have the time to make everything work fine, so it's ok to create dummy functions i.e functions that do nothing but are important for the process. 
-
-!!! Do not read after
-
-# Features
-
-As described above, we aim to provide a single endpoint that will aggregate results from these three suppliers. Whenever one sends a `GET /api/flights` on our API, then the program should retrieve all results from the suppliers, sort them accordingly to their price (ascending), and limit the number of resuls to 50 flights.
-
-Our API should return a json array containing the following schema:
-
-```
-[
-  {
-    "provider": "AIR_MOON|AIR_JAZZ|AIR_BEAM", // one of the supplier
-    "price": <double>,
-    "departure_time": <time>,
-    "arrival_time": <time>
-  }
-]
-```
-
-Beyong these *basic* features, we will be interested in finding out how you would handle the following use cases / scenarios:
- * Provider `Air Moon` frequently takes a long time to respond (but it does send back data). Depending on the way you developed the API it may have performance impacts on the whole search. How would you take care of this ? 
- * Provider `Air Jazz` has downtime issues from time to time, and returns a `HTTP 502 Bad Gateway` error. Once again, how would you handle this so it does not penalize the whole API.
- * The API we just created is to be used by our partners. How would you handle security ? We need to make sure only authenticated users (and authorized) can access this API.
- * We would want to rate limit our API, so each of our client has a limited number of allowed calls. How would you handle this ?
- * Imagine we now have a lot of incoming traffic on our API, and there is some overlap on the search requests. How could we improve the program ?
- * Anything that you think could be relevant....
-
- 
-
