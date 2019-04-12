@@ -141,7 +141,7 @@ What we want is to group all the flights with the same price. If you look at the
 
 User searched for `CDG` <-> `LHR` on the same day, and let's say we got back the following results:
 
-
+```
 O1: {... all the flight info, price: 80}
 O2: {... all the flight info, price: 80}
 O3: {... all the flight info, price: 50}
@@ -151,7 +151,7 @@ I2: {... all the flight info, price: 20}
 I3: {... all the flight info, price: 20}
 I4: {... all the flight info, price: 80}
 I5: {... all the flight info, price: 50}
-
+```
 
 
 So now we could define a group as the following json structure:
@@ -209,7 +209,7 @@ In our example, the combinations `(O2,I2) and (O2,I3)` are not in this group as 
 
 As you can see there is a lot of redundant information in this structure, as the flight information of `O1` is used several times.
 
-We need you to define a better data structure (and the accompanying algorithm) that optimizes data occupation (either accross groups or the whole response).
+**We need you to define a better data structure (and the accompanying algorithm) that optimizes data occupation (either accross groups or the whole response).**
 
 
 ### Response formats
