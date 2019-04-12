@@ -6,14 +6,14 @@ This gets materialized by a single endpoint `GET /api/flights`.
 
 # Context
 
-The inventory is maintained by three providers:
+The inventory is maintained by two providers:
  * Air-Jazz
  * Air-Moon
 
 
 All these suppliers provide their inventory through a simple API. 
 
-For the sake of this exercise, we assume that our providers only return one way flights. Therefore, for someone willing to search a return trip, we must combine two one way flights.
+For the sake of this exercise, we assume that our providers only return one way flights. Therefore, for someone willing to search for a return trip, we must combine two one way flights. Think of it as the way people search and book train tickets.
 
 ## Providers APIs
 
@@ -94,7 +94,7 @@ Air Moon response format follows schema:
 
 ```
 
-Where the legs arrays contains all the flights information. This array always contains one element.
+Where the legs array contains all the flight information. This array always contains one element.
 
 
 ## Search features
@@ -103,7 +103,7 @@ Where the legs arrays contains all the flights information. This array always co
 
 
 As described before, return trips are made of two one way flights. 
-So for instance, a user leaving from CDG (Paris) and going to LHR (London), will get back two one ways CDG <-> LHR and LHR <-> CDG.
+So for instance, a user leaving from `CDG` (Paris) and going to `LHR` (London), will get back two one ways `CDG <-> LHR` and `LHR <-> CDG`.
 
 To sum up, whenever a user hits our search endpoint (format specified later on), we do:
 
@@ -140,7 +140,7 @@ Given the list of available flights, we want to group them according to their pr
 What we want is to group all the flights with the same price. If you look at the following scenario:
 
 
-User searched for CDG <-> LHR on the same day. Within the results, 5 trips have the same price (100 €): 1 return trip and 4 combined one ways. Let's name these trips T1, T2, T3, T4, T5.
+User searched for `CDG` <-> `LHR` on the same day. Within the results, 5 trips have the same price (`100 €`): 1 return trip and 4 combined one ways. Let's name these trips `T1`, `T2`, `T3`, `T4`, `T5`.
 All these trips have outgoing and incoming flights such as :
 
 
@@ -192,8 +192,8 @@ ___
 
 
 We direcly see that the grouping may cause problems as 
-T1_Outgoing can be combined with T1_Returning, but it cannot be combined with T2_Returning as the price for this combination is no longer 100 € but rather 80 € + 35 € = 115 €.
-Moreover, T1_Outgoing seems to be combinable with T5_Returning as their cumulated price is still 100 €, but if you look at the times, you'll see that the returning time is before the arrival time....
+`T1_Outgoing` can be combined with `T1_Returning`, but it cannot be combined with `T2_Returning` as the price for this combination is no longer `100 €` but rather `80 € + 35 € = 115 €`.
+Moreover, `T1_Outgoing` seems to be combinable with `T5_Returning` as their cumulated price is still `100 €`, but if you look at the times, you'll see that the returning time is before the arrival time....
 
 So on top of the flights and groups information, we need to store the available combinations.
 
@@ -208,7 +208,7 @@ The response is free of choice, but must contain at least:
 
 
 
-
+!!! Do not read after
 
 # Features
 
