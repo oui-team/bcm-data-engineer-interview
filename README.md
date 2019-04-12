@@ -208,6 +208,26 @@ The response is free of choice, but must contain at least:
 
 
 
+# Bonus
+
+The following points are not required, but provide an extra bonus ;) If you do not have time to write the code, you can just explain us how you will tackle it. Of course, the code is preferred :)
+ * We would like the endpoint to be secured. 
+ * Beyond security, we need to be able to identify a user
+ * Once security and identification in place, we need to be able to rate limit this API. The limit is up to you.
+ * 
+
+
+# Key points
+
+The key points we will be looking at are:
+
+ * Architecture and design
+ * Code quality
+ * Tests & testability
+ * Tech choices
+
+We know you may not have the time to make everything work fine, so it's ok to create dummy functions i.e functions that do nothing but are important for the process. 
+
 !!! Do not read after
 
 # Features
@@ -237,13 +257,3 @@ Beyong these *basic* features, we will be interested in finding out how you woul
 
  
 
-# Key points
-
-The key points we will be looking at are:
-
- * Architecture and design
- * Code quality
- * Tests & testability
- * Tech choices
-
-We know you may not have the time to make everything work fine, so it's ok to create dummy functions i.e functions that do nothing but are important for the process. 
