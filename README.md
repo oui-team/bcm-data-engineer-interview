@@ -207,23 +207,40 @@ The response is free of choice, but must contain at least:
 
 
 
-
 # Bonus
 
 The following points are not required, but provide an extra bonus ;) If you do not have time to write the code, you can just explain us how you will tackle it. Of course, the code is preferred :)
+ * We would like to be able to cache and reuse results. Be aware that the response can be quite big / huge.
+ * We would like to be able to perform searches using a search radius. See "Bonus // Search radius" paragraph
  * We would like the endpoint to be secured. 
  * Beyond security, we need to be able to identify a user
  * Once security and identification in place, we need to be able to rate limit this API. The limit is up to you.
- * 
+ 
+
+## Bonus // Search radius
+
+All airports can be found in an [online database (CSV)](http://www.partow.net/downloads/GlobalAirportDatabase.zip). Schema for this db is also available [online](http://www.partow.net/miscellaneous/airportdatabase/). 
+
+Using this database, we would like to create an endpoint `GET /airports/:airport/nearby` getting by nearby aiports (50 Km radius) for a given airport.
+
+For instance, to know which airports can be found near `LHR (London)`, one could issue the following reques `GET /airports/CDG/nearby`. Distance can be calculated using different formulas:
+ * https://gis.stackexchange.com/questions/21051/distance-between-gps-coordinates
+ * https://www.movable-type.co.uk/scripts/latlong.html
+ * Whatever distance you want
+
+You can implement this the way you want (create db, store in memory, pre compute results, compute everytime, ...)
+
+The response must be an array containing aiport codes (e.g ["LGW", "LTN", "LCY"])
+
 
 
 # Key points
 
 The key points we will be looking at are:
 
+ * Tests & testability
  * Architecture and design
  * Code quality
- * Tests & testability
  * Tech choices
 
 We know you may not have the time to make everything work fine, so it's ok to create dummy functions i.e functions that do nothing but are important for the process. 
