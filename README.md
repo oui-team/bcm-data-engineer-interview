@@ -139,63 +139,78 @@ Given the list of available flights, we want to group them according to their pr
 
 What we want is to group all the flights with the same price. If you look at the following scenario:
 
-
-User searched for `CDG` <-> `LHR` on the same day. Within the results, 5 trips have the same price (`100 €`): 1 return trip and 4 combined one ways. Let's name these trips `T1`, `T2`, `T3`, `T4`, `T5`.
-All these trips have outgoing and incoming flights such as :
+User searched for `CDG` <-> `LHR` on the same day, and let's say we got back the following results:
 
 
-| Flight  | Time  | Price |
-|---|---|---|
-| T1_Outgoing   | 2019-03-29T10:10  | 80 € | 
-| T1_Returning  | 2019-03-29T18:00  | 20 € | 
+O1: {... all the flight info, price: 80}
+O2: {... all the flight info, price: 80}
+O3: {... all the flight info, price: 50}
 
-| Flight  | Time  | Price |
-|---|---|---|
-| T2_Outgoing   | 2019-03-29T11:15  | 65 € |
-| T2_Returning  | 2019-03-29T18:15  | 35 € |
-
-| Flight  | Time  | Price |
-|---|---|---|
-| T3_Outgoing   | 2019-03-29T12:25  | 30 € |
-| T3_Returning  | 2019-03-29T19:25  | 70 € |
-
-| Flight  | Time  | Price |
-|---|---|---|
-| T4_Outgoing   | 2019-03-29T13:00  | 10 € |
-| T4_Returning  | 2019-03-29T21:00  | 90 € |
-
-| Flight  | Time  | Price |
-|---|---|---|
-| T5_Outgoing   | 2019-03-29T15:30  | 50 € |
-| T5_Returning  | 2019-03-29T23:35  | 50 € |
-
-If we were to group these flights according to the previous image, we would get someting like:
-
-| Flight  | Time  | Price |
-|---|---|---|
-| T1_Outgoing  | 2019-03-29T10:10  | 80 € | 
-| T2_Outgoing  | 2019-03-29T11:15  | 65 € |
-| T3_Outgoing  | 2019-03-29T12:25  | 30 € |
-| T4_Outgoing  | 2019-03-29T13:00  | 10 € |
-| T5_Outgoing  | 2019-03-29T15:30  | 80 € |
-
-___
-
-| Flight  | Time  | Price |
-|---|---|---|
-| T1_Returning  | 2019-03-29T18:00  | 20 € | 
-| T2_Returning  | 2019-03-29T18:15  | 35 € |
-| T3_Returning  | 2019-03-29T19:25  | 70 € |
-| T4_Returning  | 2019-03-29T21:00  | 90 € |
-| T5_Returning  | 2019-03-29T09:35  | 20 € |
+I1: {... all the flight info, price: 20}
+I2: {... all the flight info, price: 20}
+I3: {... all the flight info, price: 20}
+I4: {... all the flight info, price: 80}
+I5: {... all the flight info, price: 50}
 
 
 
-We direcly see that the grouping may cause problems as 
-`T1_Outgoing` can be combined with `T1_Returning`, but it cannot be combined with `T2_Returning` as the price for this combination is no longer `100 €` but rather `80 € + 35 € = 115 €`.
-Moreover, `T1_Outgoing` seems to be combinable with `T5_Returning` as their cumulated price is still `100 €`, but if you look at the times, you'll see that the returning time is before the arrival time....
+So now we could define a group as the following json structure:
 
-So on top of the flights and groups information, we need to store the available combinations.
+```
+ {
+   price: 100,
+   combinations: [
+     {
+       outbound: {
+       ...flight information of O1
+       },
+       inbound: {
+         ...flight information of I1
+       }
+     },
+     {
+       outbound: {
+       ...flight information of O1
+       },
+       inbound: {
+         ...flight information of I2
+       }
+     },
+     {
+       outbound: {
+       ...flight information of O1
+       },
+       inbound: {
+         ...flight information of I3
+       }
+     },
+     {
+       outbound: {
+       ...flight information of O2
+       },
+       inbound: {
+         ...flight information of I1
+       }
+     },
+     {
+       outbound: {
+       ...flight information of O3
+       },
+       inbound: {
+         ...flight information of I5
+       }
+     },
+   ]   
+   }
+ }
+```
+
+In our example, the combinations `(O2,I2) and (O2,I3)` are not in this group as their departure and arrival time do not make sense (`departure_time > arrival_time`).
+
+As you can see there is a lot of redundant information in this structure, as the flight information of `O1` is used several times.
+
+We need you to define a better data structure (and the accompanying algorithm) that optimizes data occupation (either accross groups or the whole response).
+
 
 ### Response formats
 
