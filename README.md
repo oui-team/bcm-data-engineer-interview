@@ -211,6 +211,7 @@ As you can see there is a lot of redundant information in this structure, as the
 
 **We need you to define a better data structure (and the accompanying algorithm) that optimizes data occupation (either accross groups or the whole response).**
 
+Reducing data occupation does not mean removing possible combinations, but finding a way to keep the same level of information (combination) but with less memory (or json size).
 
 ### Response formats
 
