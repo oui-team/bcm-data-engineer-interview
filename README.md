@@ -6,14 +6,14 @@ This gets materialized by a single endpoint `GET /api/flights`.
 
 # Context
 
-The inventory is maintained by three providers:
+The inventory is maintained by two providers:
  * Air-Jazz
  * Air-Moon
 
 
 All these suppliers provide their inventory through a simple API. 
 
-For the sake of this exercise, we assume that our providers only return one way flights. Therefore, for someone willing to search a return trip, we must combine two one way flights.
+For the sake of this exercise, we assume that our providers only return one way flights. Therefore, for someone willing to search for a return trip, we must combine two one way flights. Think of it as the way people search and book train tickets.
 
 ## Providers APIs
 
@@ -94,7 +94,7 @@ Air Moon response format follows schema:
 
 ```
 
-Where the legs arrays contains all the flights information. This array always contains one element.
+Where the legs array contains all the flight information. This array always contains one element.
 
 
 ## Search features
@@ -103,7 +103,7 @@ Where the legs arrays contains all the flights information. This array always co
 
 
 As described before, return trips are made of two one way flights. 
-So for instance, a user leaving from CDG (Paris) and going to LHR (London), will get back two one ways CDG <-> LHR and LHR <-> CDG.
+So for instance, a user leaving from `CDG` (Paris) and going to `LHR` (London), will get back two one ways `CDG <-> LHR` and `LHR <-> CDG`.
 
 To sum up, whenever a user hits our search endpoint (format specified later on), we do:
 
@@ -139,63 +139,79 @@ Given the list of available flights, we want to group them according to their pr
 
 What we want is to group all the flights with the same price. If you look at the following scenario:
 
+User searched for `CDG` <-> `LHR` on the same day, and let's say we got back the following results:
 
-User searched for CDG <-> LHR on the same day. Within the results, 5 trips have the same price (100 €): 1 return trip and 4 combined one ways. Let's name these trips T1, T2, T3, T4, T5.
-All these trips have outgoing and incoming flights such as :
+```
+O1: {... all the flight info, price: 80}
+O2: {... all the flight info, price: 80}
+O3: {... all the flight info, price: 50}
 
-
-| Flight  | Time  | Price |
-|---|---|---|
-| T1_Outgoing   | 2019-03-29T10:10  | 80 € | 
-| T1_Returning  | 2019-03-29T18:00  | 20 € | 
-
-| Flight  | Time  | Price |
-|---|---|---|
-| T2_Outgoing   | 2019-03-29T11:15  | 65 € |
-| T2_Returning  | 2019-03-29T18:15  | 35 € |
-
-| Flight  | Time  | Price |
-|---|---|---|
-| T3_Outgoing   | 2019-03-29T12:25  | 30 € |
-| T3_Returning  | 2019-03-29T19:25  | 70 € |
-
-| Flight  | Time  | Price |
-|---|---|---|
-| T4_Outgoing   | 2019-03-29T13:00  | 10 € |
-| T4_Returning  | 2019-03-29T21:00  | 90 € |
-
-| Flight  | Time  | Price |
-|---|---|---|
-| T5_Outgoing   | 2019-03-29T15:30  | 50 € |
-| T5_Returning  | 2019-03-29T23:35  | 50 € |
-
-If we were to group these flights according to the previous image, we would get someting like:
-
-| Flight  | Time  | Price |
-|---|---|---|
-| T1_Outgoing  | 2019-03-29T10:10  | 80 € | 
-| T2_Outgoing  | 2019-03-29T11:15  | 65 € |
-| T3_Outgoing  | 2019-03-29T12:25  | 30 € |
-| T4_Outgoing  | 2019-03-29T13:00  | 10 € |
-| T5_Outgoing  | 2019-03-29T15:30  | 80 € |
-
-___
-
-| Flight  | Time  | Price |
-|---|---|---|
-| T1_Returning  | 2019-03-29T18:00  | 20 € | 
-| T2_Returning  | 2019-03-29T18:15  | 35 € |
-| T3_Returning  | 2019-03-29T19:25  | 70 € |
-| T4_Returning  | 2019-03-29T21:00  | 90 € |
-| T5_Returning  | 2019-03-29T09:35  | 20 € |
+I1: {... all the flight info, price: 20}
+I2: {... all the flight info, price: 20}
+I3: {... all the flight info, price: 20}
+I4: {... all the flight info, price: 80}
+I5: {... all the flight info, price: 50}
+```
 
 
+So now we could define a group as the following json structure:
 
-We direcly see that the grouping may cause problems as 
-T1_Outgoing can be combined with T1_Returning, but it cannot be combined with T2_Returning as the price for this combination is no longer 100 € but rather 80 € + 35 € = 115 €.
-Moreover, T1_Outgoing seems to be combinable with T5_Returning as their cumulated price is still 100 €, but if you look at the times, you'll see that the returning time is before the arrival time....
+```
+ {
+   price: 100,
+   combinations: [
+     {
+       outbound: {
+       ...flight information of O1
+       },
+       inbound: {
+         ...flight information of I1
+       }
+     },
+     {
+       outbound: {
+       ...flight information of O1
+       },
+       inbound: {
+         ...flight information of I2
+       }
+     },
+     {
+       outbound: {
+       ...flight information of O1
+       },
+       inbound: {
+         ...flight information of I3
+       }
+     },
+     {
+       outbound: {
+       ...flight information of O2
+       },
+       inbound: {
+         ...flight information of I1
+       }
+     },
+     {
+       outbound: {
+       ...flight information of O3
+       },
+       inbound: {
+         ...flight information of I5
+       }
+     },
+   ]   
+   }
+ }
+```
 
-So on top of the flights and groups information, we need to store the available combinations.
+In our example, the combinations `(O2,I2) and (O2,I3)` are not in this group as their departure and arrival time do not make sense (`departure_time > arrival_time`).
+
+As you can see there is a lot of redundant information in this structure, as the flight information of `O1` is used several times.
+
+**We need you to define a better data structure (and the accompanying algorithm) that optimizes data occupation (either accross groups or the whole response).**
+
+Reducing data occupation does not mean removing possible combinations, but finding a way to keep the same level of information (combination) but with less memory (or json size).
 
 ### Response formats
 
@@ -207,43 +223,44 @@ The response is free of choice, but must contain at least:
 
 
 
+# Bonus
 
-
-
-# Features
-
-As described above, we aim to provide a single endpoint that will aggregate results from these three suppliers. Whenever one sends a `GET /api/flights` on our API, then the program should retrieve all results from the suppliers, sort them accordingly to their price (ascending), and limit the number of resuls to 50 flights.
-
-Our API should return a json array containing the following schema:
-
-```
-[
-  {
-    "provider": "AIR_MOON|AIR_JAZZ|AIR_BEAM", // one of the supplier
-    "price": <double>,
-    "departure_time": <time>,
-    "arrival_time": <time>
-  }
-]
-```
-
-Beyong these *basic* features, we will be interested in finding out how you would handle the following use cases / scenarios:
- * Provider `Air Moon` frequently takes a long time to respond (but it does send back data). Depending on the way you developed the API it may have performance impacts on the whole search. How would you take care of this ? 
- * Provider `Air Jazz` has downtime issues from time to time, and returns a `HTTP 502 Bad Gateway` error. Once again, how would you handle this so it does not penalize the whole API.
- * The API we just created is to be used by our partners. How would you handle security ? We need to make sure only authenticated users (and authorized) can access this API.
- * We would want to rate limit our API, so each of our client has a limited number of allowed calls. How would you handle this ?
- * Imagine we now have a lot of incoming traffic on our API, and there is some overlap on the search requests. How could we improve the program ?
- * Anything that you think could be relevant....
-
+The following points are not required, but provide an extra bonus ;) If you do not have time to write the code, you can just explain us how you will tackle it. Of course, the code is preferred :)
+ * We would like to be able to cache and reuse results. Be aware that the response can be quite big / huge.
+ * We would like to be able to perform searches using a search radius. See "Bonus // Search radius" paragraph
+ * We would like the endpoint to be secured. 
+ * Beyond security, we need to be able to identify a user
+ * Once security and identification in place, we need to be able to rate limit this API. The limit is up to you.
  
+
+ We are also interested in knowing:
+  * How you would deploy this in production.
+  * What technologies would you use to have a CI/CD running. 
+
+## Bonus // Search radius
+
+All airports can be found in an [online database (CSV)](http://www.partow.net/downloads/GlobalAirportDatabase.zip). Schema for this db is also available [online](http://www.partow.net/miscellaneous/airportdatabase/). 
+
+Using this database, we would like to create an endpoint `GET /airports/:airport/nearby` getting by nearby aiports (50 Km radius) for a given airport.
+
+For instance, to know which airports can be found near `LHR (London)`, one could issue the following reques `GET /airports/CDG/nearby`. Distance can be calculated using different formulas:
+ * https://gis.stackexchange.com/questions/21051/distance-between-gps-coordinates
+ * https://www.movable-type.co.uk/scripts/latlong.html
+ * Whatever distance you want
+
+You can implement this the way you want (create db, store in memory, pre compute results, compute everytime, ...)
+
+The response must be an array containing aiport codes (e.g `["LGW", "LTN", "LCY"]`)
+
+
 
 # Key points
 
 The key points we will be looking at are:
 
+ * Tests & testability
  * Architecture and design
  * Code quality
- * Tests & testability
  * Tech choices
 
 We know you may not have the time to make everything work fine, so it's ok to create dummy functions i.e functions that do nothing but are important for the process. 
