@@ -280,3 +280,5 @@ The key points we will be looking at are:
  * Tech choices
 
 We know you may not have the time to make everything work fine, so it's ok to create dummy functions i.e functions that do nothing but are important for the process. 
+
+If you take any shortcurt in your code, please comment it properly why you did it and how you would do it properly.
