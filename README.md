@@ -2,7 +2,16 @@
 
 The goal here is to create an API that returns flights information. Basically we're trying to develop an API that supplies aggregated flight searches results across multiple providers (skyscanner clone).
 
-This gets materialized by a single endpoint `GET /api/flights`. 
+This gets materialized by a single endpoint `GET /api/flights?departure_airport=...&arrival_airport=...&departure_date=...&return_date=...&tripType=R|OW`. 
+
+Where:
+ * depature_airport is the aiport code from which the user wants to leave
+ * arrival_airport is the airport code to where the user wants to travel
+ * departure_date is the desired departure date
+ * return_date is the desired returning date
+ * tripType is an enum indicating whether the trip is one-way (OW) or return (R)
+
+In the whole exercise we assume all trips are for one passenger, that's why it's not part of the parameters.
 
 # Context
 
