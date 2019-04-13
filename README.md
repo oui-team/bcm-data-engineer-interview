@@ -23,7 +23,7 @@ For the sake of this exercise, we assume that our providers only return one way 
 Both the suppliers have the same HTTP query format. This format is: 
 
 ```
-/<provider name>/flights?depature_airport=...&arrival_airport=...&departure_date=...&return_date=...&tripType=...
+http://flights.beta.bcmenergy.fr/<provider name>/flights?departure_airport=...&arrival_airport=...&departure_date=...
 ```
 
 Where:
@@ -31,15 +31,22 @@ Where:
  * depature_airport is the aiport code from which the user wants to leave
  * arrival_airport is the airport code to where the user wants to travel
  * departure_date is the desired departure date
- * return_date is the desired returning date
- * tripType is an enum indicating whether the trip is one-way (OW) or return (R)
+
+So for instance those are valid URLs:
+`
+http://flights.beta.bcmenergy.fr/jazz/flights?departure_airport=CDG&arrival_airport=LHR&departure_date=2019-03-28
+`
+
+And
+
+`
+http://flights.beta.bcmenergy.fr/moon/flights?departure_airport=CDG&arrival_airport=LHR&departure_date=2019-03-28
+`
 
 
 All dates follow the format `YYYY-MM-DD`.
-All datetimes follow format `YYYY-MM-DDTHH:mm:ss`.
-Triptype enum is either `OW` or `R`.
+All datetimes follow format `YYYY-MM-DDTHH:mm`.
 Airport codes are three letters  [IATA Codes](https://en.wikipedia.org/wiki/IATA_airport_code) 
-When the `tripType` is set to `OW` (One way), the `return_date` parameters is not required.
 We assume all passengers are coming back to the same airport they left.
 
 
@@ -108,7 +115,7 @@ So for instance, a user leaving from `CDG` (Paris) and going to `LHR` (London), 
 To sum up, whenever a user hits our search endpoint (format specified later on), we do:
 
 ```
-If tripType = R 
+If tripType = R (Return)
 Then 
  |  For all our suppliers:
  |  Do
@@ -117,7 +124,7 @@ Then
  |  End
  | 
  |  We combine all the one ways into returns flights
-Else if tripType = OW
+Else if tripType = OW (One Way)
 Then
 | We only search one way trips with all our suppliers
 End
