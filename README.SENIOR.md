@@ -5,17 +5,17 @@ As described in the Key Points sections: **We would be looking at your code the 
 
 ## Route
 
-A route is a direct flight between an originating airport (departue) and arrival airport. 
+A route is a direct flight between an originating airport (departure) and arrival airport. 
 
 ## Code share
 
-Two airline could come to an agreement where the operating airline (the one operating the flight) would allow an other carrier to sell its own inventory. This agreement is called a code share, and is decided on a per route basis.
+Two airlines could come to an agreement where the operating airline (the one operating the flight) would allow an other carrier to sell its own inventory. This agreement is called a code share, and is decided on a per route basis.
 For instance, you could have BA (British Airways) operating a flight from Paris to London, and also allowing Air France to sell this same flight. However, other companies cannot sell this flight unless they also come to a code share agreement with British Airways.
 
 ## Inventory 
 
 Our inventory consists of records of all routes operated by every airline, along with their code share agreements.
-This gets materialized by a table `t_routes', which looks like:
+This gets materialized by a table `t_routes`, which looks like:
 
 
 | id  | operating_airline  | from  | to  | code_shares |
