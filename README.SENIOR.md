@@ -15,7 +15,7 @@ For instance, you could have BA (British Airways) operating a flight from Paris 
 ## Inventory 
 
 Our inventory consists of records of all routes operated by every airline, along with their code share agreements.
-This gets materialized by a table (`t_routes'), which looks like:
+This gets materialized by a table `t_routes', which looks like:
 
 
 | id  | operating_airline  | from  | to  | code_shares |
@@ -26,11 +26,11 @@ This gets materialized by a table (`t_routes'), which looks like:
 
 
 Where:
- * id is a uuid for the given row
- * operating_airline is the tow letters airline code  (e.g AF: Air France, BA: British Airways, U2: Easyjet..)
- * from is the originating airport code
- * to is the arrival airport code 
- * code_shares is a comma separated list of airline codes
+ * `id` is a uuid for the given row
+ * `operating_airline` is the two letters airline code  (e.g AF: Air France, BA: British Airways, U2: Easyjet..)
+ * `from` is the originating airport code
+ * `to` is the arrival airport code 
+ * `code_shares` is a comma separated list of airline codes
 
 Airport codes are three letters  [IATA Codes](https://en.wikipedia.org/wiki/IATA_airport_code) 
 Airline codes are two letters [IATA Codes](https://en.wikipedia.org/wiki/List_of_airline_codes) 
@@ -127,6 +127,12 @@ There is no technical constraint on this test. It's up to you to decide:
 
 
  The only constraint is to use the data which are in the database provided.
+
+# Live database
+
+The inventory is available at one of our public database: 
+....
+
 
 # Bonus 
 
