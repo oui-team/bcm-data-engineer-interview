@@ -128,13 +128,20 @@ There is no technical constraint on this test. It's up to you to decide:
 
  The only constraint is to use the data which are in the database provided.
 
-# Live database
+# Dataset
 
-The inventory is available at one of our public database: 
-....
+We provide two inventories as CSV files:
+ * [routes.csv](dataset/routes.csv)
+ * [routes-without-codeshare.csv](dataset/routes-without-codeshare.csv) which is the same file as above but without any code share
 
+# What is expected
 
-# Bonus 
+We split the exercise in three steps:
+ * [Mandatory] We expect you the provide the API in a context where there is no code share. The associated dataset is the one provided in the [routes-without-codeshare.csv](dataset/routes-without-codeshare.csv) file
+ * [Bonus #1] If you still have time, we'd like to see a working solution for the case where we have code shares in place. In this scenario, the dataset to use is the one ine the [routes.csv](dataset/routes.csv) file.
+ * [Bonus #2] For this one we do not expect any code to be written. This is described below.
+
+# Bonus // No code required
 
 The following points are not required, but provide an extra bonus ;) 
 We do not expect you to write the code for it, but rather explain how you would tackle it.
