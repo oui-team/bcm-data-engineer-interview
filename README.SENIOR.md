@@ -125,8 +125,7 @@ There is no technical constraint on this test. It's up to you to decide:
  * The language
  * Whether you build the API using in-memory solutions, using DB....
 
-
- The only constraint is to use the data which are in the database provided.
+Really it's up to you to make your own choices. The only constraint is to use the data which are in our datasets. See below.
 
 # Dataset
 
