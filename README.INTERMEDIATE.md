@@ -13,6 +13,8 @@ Where:
 
 In the whole exercise we assume all trips are for one passenger, that's why it's not part of the parameters.
 
+As described in the Key Points sections: **We would be looking at your code the same way we would be looking at production code.**
+
 # Context
 
 The inventory is maintained by two providers:
