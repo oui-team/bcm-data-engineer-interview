@@ -6,13 +6,13 @@ L’objectif de cet exercice est de créer une application standalone qui récup
 
 # Contexte
 
-Pour cet exercice, nous nous plaçons dans le contexte suivant: nous avons trois centrales de production énergie qui sont : 
+Pour cet exercice, nous nous plaçons dans le contexte suivant: nous avons trois centrales de production d'énergie qui sont : 
 
 - Hawes
 - Barnsley 
 - Hounslow 
 
-Sur chacune de ces centrales, nous avons des infrastructures de monitoring qui sont en capacité de remonter des informations basiques de production d’électricité. Le pas de temps de mesure est toujours constant, mais diffère pour chaque centrale:
+Sur chacune de ces centrales, nous avons des infrastructures de monitoring qui sont en capacité de remonter des informations basiques de production d’électricité : ici, nous nous intéressons uniquement à la puissance de production sur un pas de temps donné. Le pas de temps de mesure est toujours constant, mais diffère pour chaque centrale:
 
 | **Centrale** | **Pas de temps** |
 | ------------ | ---------------- |
@@ -20,7 +20,7 @@ Sur chacune de ces centrales, nous avons des infrastructures de monitoring qui s
 | Barnsley     | 30 minutes       |
 | Hounslow     | 60 minutes       |
 
-Nous sommes seulement intéressés par la somme de ces mesures de production. Pour faciliter l’exercice, la somme des pas de temps se cale sur le plus petit de nos centrales, à savoir 15 minutes. C’est bien ici la **somme** qui nous intéresse comme fonction d’agrégation.
+Nous sommes seulement intéressés par la somme de ces puissances de production. Pour faciliter l’exercice, la somme de ces mesures par pas de temps se cale sur le plus petit de nos centrales, à savoir 15 minutes. C’est bien ici la **somme** qui nous intéresse comme fonction d’agrégation.
 
 Le chapitre suivant donne plus d’indications sur chacune des centrales.
 
@@ -41,8 +41,8 @@ Query Params:
 
 | Parameter | Description                   | Format     |
 | --------- | ----------------------------- | ---------- |
-| from      | The start date for the search | MM-DD-YYYY |
-| to        | The end date for the search   | MM-DD-YYYY |
+| from      | The start date for the search | DD-MM-YYYY |
+| to        | The end date for the search   | DD-MM-YYYY |
 
 **Exemple de requête et réponse**
 
@@ -81,8 +81,8 @@ Query Params:
 
 | Parameter | Description                   | Format     |
 | --------- | ----------------------------- | ---------- |
-| from      | The start date for the search | MM-DD-YYYY |
-| to        | The end date for the search   | MM-DD-YYYY |
+| from      | The start date for the search | DD-MM-YYYY |
+| to        | The end date for the search   | DD-MM-YYYY |
 
 **Exemple de requête et réponse**
 
@@ -116,8 +116,8 @@ Query Params:
 
 | Parameter | Description                   | Format     |
 | --------- | ----------------------------- | ---------- |
-| from      | The start date for the search | MM-DD-YYYY |
-| to        | The end date for the search   | MM-DD-YYYY |
+| from      | The start date for the search | DD-MM-YYYY |
+| to        | The end date for the search   | DD-MM-YYYY |
 
 **Exemple de requête et réponse**
 
@@ -139,8 +139,8 @@ Nous ne voulons pas d’API, mais un programme standalone écrit dans le langage
 
 Notre programme prend 3 paramètres en entrée:
 
-- from (date au format MM-DD-YYYY)
-- to (date au format MM-DD-YYYY)
+- from (date au format DD-MM-YYYY)
+- to (date au format DD-MM-YYYY)
 - format (string: json | csv)
 
 Où `from` correspond au point de départ de la remontée d’infos et `to` le point final. Une fois les agrégations finalisées, le programme doit afficher sur la sortie standard, le résultat en utilisant le format correspondant au paramètre passé en entrée de programme (paramètre `format`)
