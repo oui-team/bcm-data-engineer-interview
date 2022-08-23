@@ -19,10 +19,8 @@ Le format de sortie de l'API de la centrale Hawes est du _JSON_. Chaque réponse
 
 L'API permet la récupération des données enregistrées sur le site et prend deux paramètres: `from` et `to`. `from` correspond au point de départ de la remontée d’informations, `to` étant le point final.
 
-L'API renvoie l’ensemble des données existantes comprises entre `from` et `to` sous forme de segment d’une durée fixe (15 min). Toutes les données temporelles sont renvoyées sous forme de _timestamp_.
+L'API renvoie l’ensemble des données existantes comprises entre `from` et `to` sous forme de segment d’une durée fixe (15 min). Toutes les données temporelles sont renvoyées sous forme de _timestamp_. L'API de récupération de la donnée est décrite ci-dessous:
 
-
-## Hawes
 
 - URL: https://interview.beta.bcmenergy.fr/hawes
 - Query Params:
@@ -64,7 +62,7 @@ $> curl https://interview.beta.bcmenergy.fr/hawes?from=01-01-2020&to=05-01-2020
 
 # Programme attendu
 
-Comme décrit plus haut, nous attendons un programme qui soit en mesure de pouvoir récupérer la donnée brute, la nettoyer (cf  paragraphe _Contraintes_ ) et l'insérer en base de données.
+Comme décrit plus haut, nous attendons un programme qui soit en mesure de pouvoir récupérer la donnée brute, la nettoyer (cf. [Paragraphe "Contraintes"](#contraintes)) et l'insérer en base de données.
 
 Nous ne voulons pas d’API, mais un programme standalone dans la stack de votre choix (langage et base de données de votre choix). Le nombre de frameworks utilisés doit être tenu au strict minimum.
 
@@ -75,8 +73,7 @@ Notre programme prend 2 paramètres en entrée:
 
 Où `from` correspond au point de départ de la remontée d’infos et `to` le point final.
 
-Nous attendrons également des scripts d'initialisation de base de données ainsi que les instructions pour les utiliser (docker-compose, etc).
-
+Nous attendrons également des scripts d'initialisation de base de données ainsi que des instructions pour les utiliser (docker-compose, etc).
 
 ## Contraintes
 
