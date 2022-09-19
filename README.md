@@ -12,14 +12,14 @@ Pour cet exercice, nous avons une centrale de production d'énergie qui s'appell
 `Hawes`.
 
 Nous avons une infrastructure de monitoring qui est en capacité de remonter des
-informations basiques de production d’électricité de la centrale. Ici, nous nous
+informations sur la production d’électricité de la centrale. Ici nous nous
 intéressons uniquement à la puissance de production sur un pas de temps donné.
-**Le pas de temps de mesure est toujours constant et vaut de 15 minutes**:
+**Le pas de temps de mesure est toujours constant et vaut 15 minutes.**
 
 # Centrale Hawes
 
-L'API permet la récupération des données enregistrées sur le site et prend deux
-paramètres: `from` et `to`. `from` correspond au point de départ de la remontée
+L'API permet la récupération des données de production et prend deux
+paramètres en entrée : `from` et `to`. `from` correspond au point de départ de la remontée
 d’informations, `to` étant le point final.
 
 L'API renvoie l’ensemble des données existantes comprises entre `from` et `to`
